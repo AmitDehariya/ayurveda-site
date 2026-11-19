@@ -2,6 +2,8 @@
 
 A full-stack website for an Ayurvedic physician and professor. It includes a public site (profile, services, articles, gallery, videos, testimonials, contact) and a simple admin panel where **all** content can be edited without touching code.
 
+📚 **Team documentation** (with diagrams) is in [`docs/`](docs/README.md): [project overview](docs/1-project-overview.md) for managers · [architecture & structure](docs/2-architecture.md) · [developer guide](docs/3-developer-guide.md) · [testing guide](docs/4-testing-guide.md).
+
 **Stack:** Next.js 15 (App Router) · TypeScript · Tailwind CSS + shadcn-style UI · Framer Motion · Prisma (SQLite locally, PostgreSQL in production) · NextAuth (credentials + bcrypt) · Cloudinary (uploads) · TipTap (rich text) · Zod + React Hook Form · Nodemailer
 
 ---
