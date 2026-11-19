@@ -1,0 +1,278 @@
+// Prisma schema for Dr. Deepmala Mourya's Ayurveda website.
+//
+// Local development uses SQLite. To use PostgreSQL in production change
+// `provider` below to "postgresql" (see README → Deploy). The schema avoids
+// database-specific features so that switch is a one-word change.
+//
+// "Enum-like" fields are stored as strings (SQLite has no native enums);
+// allowed values are enforced by Zod in src/lib/validators.ts.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String   @default("")
+  passwordHash String
+  // Bumped on password change so existing sessions are invalidated.
+  tokenVersion Int      @default(0)
+  lastLoginAt  DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+/// Single row (id = 1) holding all site-wide settings.
+model SiteSetting {
+  id               Int      @id @default(1)
+  siteName         String   @default("Dr. Priyanka – Ayurveda")
+  tagline          String   @default("")
+  logoUrl          String   @default("")
+  faviconUrl       String   @default("")
+  heroEyebrow      String   @default("")
+  heroTitle        String   @default("")
+  heroSubtitle     String   @default("")
+  heroImageUrl     String   @default("")
+  introTitle       String   @default("")
+  introText        String   @default("")
+  ctaTitle         String   @default("")
+  ctaText          String   @default("")
+  phone            String   @default("")
+  email            String   @default("")
+  whatsappNumber   String   @default("")
+  address          String   @default("")
+  timings          String   @default("")
+  mapEmbedUrl      String   @default("")
+  mapLink          String   @default("")
+  facebookUrl      String   @default("")
+  instagramUrl     String   @default("")
+  youtubeUrl       String   @default("")
+  linkedinUrl      String   @default("")
+  twitterUrl       String   @default("")
+  footerText       String   @default("")
+  disclaimer       String   @default("")
+  metaTitle        String   @default("")
+  metaDescription  String   @default("")
+  metaKeywords     String   @default("")
+  ogImageUrl       String   @default("")
+  updatedAt        DateTime @updatedAt
+}
+
+/// Single row (id = 1) with the doctor's profile.
+model Profile {
+  id            Int      @id @default(1)
+  fullName      String   @default("")
+  title         String   @default("")
+  degrees       String   @default("")
+  designation   String   @default("")
+  institution   String   @default("")
+  shortBio      String   @default("")
+  bioHtml       String   @default("")
+  academicHtml  String   @default("")
+  photoUrl      String   @default("")
+  aboutImageUrl String   @default("")
+  updatedAt     DateTime @updatedAt
+}
+
+model Qualification {
+  id          String   @id @default(cuid())
+  degree      String
+  institution String   @default("")
+  year        String   @default("")
+  description String   @default("")
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+model TimelineItem {
+  id           String   @id @default(cuid())
+  period       String   @default("")
+  title        String
+  organization String   @default("")
+  description  String   @default("")
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+}
+
+model Achievement {
+  id          String   @id @default(cuid())
+  // AWARD | CERTIFICATE | MEMBERSHIP
+  kind        String   @default("AWARD")
+  title       String
+  issuer      String   @default("")
+  year        String   @default("")
+  description String   @default("")
+  imageUrl    String   @default("")
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+model Publication {
+  id        String   @id @default(cuid())
+  title     String
+  authors   String   @default("")
+  journal   String   @default("")
+  year      String   @default("")
+  url       String   @default("")
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model Service {
+  id               String   @id @default(cuid())
+  title            String
+  slug             String   @unique
+  icon             String   @default("leaf")
+  imageUrl         String   @default("")
+  shortDescription String   @default("")
+  contentHtml      String   @default("")
+  isVisible        Boolean  @default(true)
+  order            Int      @default(0)
+  metaTitle        String   @default("")
+  metaDescription  String   @default("")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([isVisible, order])
+}
+
+model Category {
+  id        String      @id @default(cuid())
+  name      String
+  slug      String
+  // BLOG | VIDEO
+  type      String      @default("BLOG")
+  order     Int         @default(0)
+  createdAt DateTime    @default(now())
+  posts     BlogPost[]
+  videos    Video[]
+
+  @@unique([type, slug])
+}
+
+model BlogPost {
+  id              String    @id @default(cuid())
+  title           String
+  slug            String    @unique
+  excerpt         String    @default("")
+  contentHtml     String    @default("")
+  coverImageUrl   String    @default("")
+  categoryId      String?
+  category        Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  // Comma separated, e.g. "digestion, diet"
+  tags            String    @default("")
+  // DRAFT | PUBLISHED
+  status          String    @default("DRAFT")
+  publishedAt     DateTime?
+  metaTitle       String    @default("")
+  metaDescription String    @default("")
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([status, publishedAt])
+}
+
+model GalleryAlbum {
+  id            String         @id @default(cuid())
+  title         String
+  slug          String         @unique
+  description   String         @default("")
+  coverImageUrl String         @default("")
+  isVisible     Boolean        @default(true)
+  order         Int            @default(0)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  images        GalleryImage[]
+}
+
+model GalleryImage {
+  id        String       @id @default(cuid())
+  albumId   String
+  album     GalleryAlbum @relation(fields: [albumId], references: [id], onDelete: Cascade)
+  url       String
+  caption   String       @default("")
+  alt       String       @default("")
+  order     Int          @default(0)
+  createdAt DateTime     @default(now())
+
+  @@index([albumId, order])
+}
+
+model Video {
+  id           String    @id @default(cuid())
+  title        String
+  description  String    @default("")
+  // YOUTUBE | VIMEO | UPLOAD
+  source       String    @default("YOUTUBE")
+  url          String
+  thumbnailUrl String    @default("")
+  categoryId   String?
+  category     Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  isVisible    Boolean   @default(true)
+  isFeatured   Boolean   @default(false)
+  order        Int       @default(0)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Feedback {
+  id         String   @id @default(cuid())
+  name       String
+  city       String   @default("")
+  rating     Int      @default(5)
+  message    String
+  photoUrl   String   @default("")
+  // PENDING | APPROVED | REJECTED
+  status     String   @default("PENDING")
+  isFeatured Boolean  @default(false)
+  ipHash     String   @default("")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([status, createdAt])
+}
+
+model Inquiry {
+  id            String   @id @default(cuid())
+  name          String
+  phone         String   @default("")
+  email         String   @default("")
+  subject       String   @default("")
+  preferredTime String   @default("")
+  message       String
+  // NEW | READ | REPLIED
+  status        String   @default("NEW")
+  ipHash        String   @default("")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([status, createdAt])
+}
+
+/// Highlight numbers on the home page ("15+ Years of experience").
+model Stat {
+  id        String   @id @default(cuid())
+  label     String
+  value     Int      @default(0)
+  suffix    String   @default("+")
+  icon      String   @default("leaf")
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+/// Simple audit trail shown on the admin dashboard.
+model ActivityLog {
+  id        String   @id @default(cuid())
+  action    String
+  entity    String
+  summary   String
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}

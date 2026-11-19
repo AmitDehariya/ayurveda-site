@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2d4f34"/><stop offset="1" stop-color="#6a9870"/></linearGradient>
+<radialGradient id="r" cx=".75" cy=".2" r=".7"><stop offset="0" stop-color="#e4c477" stop-opacity=".45"/><stop offset="1" stop-color="#e4c477" stop-opacity="0"/></radialGradient></defs>
+<rect width="1280" height="720" fill="url(#g)"/><rect width="1280" height="720" fill="url(#r)"/>
+<g transform="translate(64 648) rotate(-30) scale(2.56)" opacity="0.35"><path d="M0 0C30-40 80-50 120-30 100 10 50 30 0 0Z" fill="#e4c477"/><path d="M0 0C40-12 80-22 120-30" stroke="#e4c477" stroke-opacity=".6" stroke-width="3" fill="none"/></g><g transform="translate(1024 180) rotate(150) scale(1.8285714285714285)" opacity="0.3"><path d="M0 0C30-40 80-50 120-30 100 10 50 30 0 0Z" fill="#e4c477"/><path d="M0 0C40-12 80-22 120-30" stroke="#e4c477" stroke-opacity=".6" stroke-width="3" fill="none"/></g><g transform="translate(896 684) rotate(-60) scale(2.1333333333333333)" opacity="0.25"><path d="M0 0C30-40 80-50 120-30 100 10 50 30 0 0Z" fill="#e4c477"/><path d="M0 0C40-12 80-22 120-30" stroke="#e4c477" stroke-opacity=".6" stroke-width="3" fill="none"/></g>
+
+<text x="50%" y="360" text-anchor="middle" font-family="Georgia, serif" font-size="71" fill="#e4c477">Sample Video</text>
+<text x="50%" y="418.1818181818182" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" fill="#e4c477" fill-opacity=".75">Replace with a real YouTube link from admin</text>
+</svg>

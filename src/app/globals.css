@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Calm Ayurveda palette: cream background, forest green, soft gold. */
+    --background: 40 50% 97%;
+    --foreground: 140 25% 13%;
+    --card: 0 0% 100%;
+    --card-foreground: 140 25% 13%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 140 25% 13%;
+    --primary: 140 30% 25%;
+    --primary-foreground: 40 50% 97%;
+    --secondary: 39 45% 91%;
+    --secondary-foreground: 140 25% 16%;
+    --muted: 39 35% 93%;
+    --muted-foreground: 140 9% 34%;
+    --accent: 39 58% 51%;
+    --accent-foreground: 140 30% 10%;
+    --destructive: 0 65% 45%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 39 28% 84%;
+    --input: 39 22% 78%;
+    --ring: 140 30% 30%;
+    --radius: 0.75rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-serif tracking-tight text-forest-900;
+  }
+
+  /* Visible focus for keyboard users everywhere. */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .section {
+    @apply py-16 md:py-24;
+  }
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-gold-700;
+  }
+  .heading-xl {
+    @apply font-serif text-4xl leading-tight text-forest-900 sm:text-5xl lg:text-6xl;
+  }
+  .heading-lg {
+    @apply font-serif text-3xl leading-tight text-forest-900 sm:text-4xl;
+  }
+  .bg-leaf-pattern {
+    background-color: theme("colors.cream.100");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%232d4f34' stroke-opacity='0.06' stroke-width='1.2'%3E%3Cpath d='M20 60c15-25 40-30 60-20-10 20-35 30-60 20z'/%3E%3Cpath d='M20 60c20-5 40-12 60-20'/%3E%3Cpath d='M70 100c8-14 22-17 34-11-6 11-19 17-34 11z'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  /* Rich text coming from the TipTap editor. */
+  .rich-content {
+    @apply prose prose-lg max-w-none prose-headings:font-serif prose-headings:text-forest-900 prose-a:text-forest-700 prose-a:underline-offset-4 prose-strong:text-forest-900 prose-blockquote:border-l-gold-500 prose-blockquote:text-forest-800 prose-img:rounded-xl prose-li:marker:text-gold-600;
+  }
+}
+
+/* TipTap editor in the admin panel */
+.tiptap {
+  @apply min-h-[220px] px-4 py-3 outline-none;
+}
+.tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  @apply pointer-events-none float-left h-0 text-muted-foreground;
+}

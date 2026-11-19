@@ -1,0 +1,19 @@
+node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# secrets
+.env
+.env.local
+.env.*.local
+
+# local database + local uploads (not used in production)
+prisma/*.db
+prisma/*.db-journal
+uploads/
+
+npm-debug.log*
+.DS_Store
+.vercel
